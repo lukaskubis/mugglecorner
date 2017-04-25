@@ -1,0 +1,22 @@
+// The base font-size is set at 62.5% for having the convenience
+// of sizing rems in a way that is similar to using px: 1.6rem = 16px
+html
+	box-sizing: border-box
+	font-size: 62.5%
+	-webkit-text-size-adjust: 100%
+
+// Default body styles
+body
+	margin: 0
+	color: #333
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+	font-size: 1.6em // Currently ems cause chrome bug misinterpreting rems on body element
+	font-weight: 300
+	letter-spacing: .01em
+	line-height: 1.6
+
+// Set box-sizing globally to handle padding and border widths
+*,
+*:after,
+*:before
+	box-sizing: inherit

@@ -2,3 +2,5 @@ __venv__
 __pycache__
 *.pyc
 *.egg-info
+
+.sass-cache
