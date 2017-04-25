@@ -20,3 +20,18 @@ body
 *:after,
 *:before
 	box-sizing: inherit
+
+.wrapper
+	width: 92.2rem
+	margin: auto
+	transition: width .4s
+
+	@media (max-width: $device-width-l)
+		width: 100%
+
+div.content
+	padding: 2.4rem
+	transition: padding .4s
+
+	@media (max-width: $device-width-s)
+		padding: 1.2rem

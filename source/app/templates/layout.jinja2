@@ -6,15 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="muggle corner">
     <meta name="author" content="Lukas Kubis">
-
     <title>Muggle Corner</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Temp -->
     <link href="{{request.static_url('app:static/style/app.css')}}" rel="stylesheet">
-
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -23,13 +16,29 @@
   </head>
 
   <body>
-    <footer>
-      <div class="contact">
-        <a href="">Twitter</a>
-        <a href="">Mail</a>
+    <div class="header">
+      <div class="wrapper">
+        <h3>Muggle corner</h3>
       </div>
-      <div class="copyright">
-        © 2017 Lukas Kubis
+    </div>
+
+    <div class="wrapper">
+      <div class="content">
+        {% block content %}
+          No content
+        {% endblock %}
+      </div>
+    </div>
+
+    <footer>
+      <div class="wrapper">
+        <div class="contact">
+          <a href="">Twitter</a>
+          <a href="">Mail</a>
+        </div>
+        <div class="copyright">
+          © 2017 <a href="https://twitter.com/thelukaskubis" target="_blank">Lukas Kubis</a>
+        </div>
       </div>
     </footer>
     <!-- Bootstrap core JavaScript
