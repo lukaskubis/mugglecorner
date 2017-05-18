@@ -1,8 +1,6 @@
 # tables.py
 
 from .dbsession import *
-import sqlalchemy.orm as orm
-
 
 class Muggle(SqlAlchemyBase):
     __tablename__ = 'User'
