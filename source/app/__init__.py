@@ -1,8 +1,7 @@
 # __init__.py
 
-import os
 from pyramid.config import Configurator
-from .data import init_db
+from .data import db_init
 
 
 def main(global_config, **settings):
@@ -15,8 +14,8 @@ def main(global_config, **settings):
     # custom jinja2 extension
     config.add_jinja2_renderer('.j2')
 
-    # initialize the database here
-    init_db(os.path.dirname(__file__))
+    # initialize the database
+    db_init()
 
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('home', '/')
