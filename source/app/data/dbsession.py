@@ -5,7 +5,9 @@ import sqlalchemy.orm as orm
 import sqlalchemy.ext.declarative as db
 
 from functools import wraps
+from .tables import *
 
+SqlAlchemyBase = db.declarative_base()
 
 class DBSessionFactory:
     session = None
@@ -20,7 +22,7 @@ class DBSessionFactory:
 
         conn_str = 'sqlite:///' + db_file
         engine = sqlalchemy.create_engine(conn_str, echo=True)
-        db.declarative_base().metadata.create_all(engine)
+        SqlAlchemyBase.metadata.create_all(engine)
         DBSessionFactory.session = orm.sessionmaker(bind=engine)
 
 

@@ -2,7 +2,6 @@
 
 from .dbsession import *
 
-SqlAlchemyBase = db.declarative_base()
 
 class Muggle(SqlAlchemyBase):
     __tablename__ = 'Muggle'
