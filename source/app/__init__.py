@@ -1,3 +1,5 @@
+# __init__.py
+
 import os
 from pyramid.config import Configurator
 from .data import init_db

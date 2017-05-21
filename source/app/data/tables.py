@@ -3,23 +3,20 @@
 from .dbsession import *
 
 class Muggle(SqlAlchemyBase):
-    __tablename__ = 'User'
+    __tablename__ = 'Muggle'
 
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    twitter_handle = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=False)
-    email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True)
+    id = sqlalchemy.Column(sqlalchemy.String, primary_key=True)
 
     # relationships
-    submits = orm.relationship('MuggleAction', back_populates='submitter')
-    actions = orm.relationship('MuggleAction', back_populates='muggles')
+    muggly_things = orm.relationship('MugglyThing', back_populates='muggles')
 
 
-class MuggleAction(SqlAlchemyBase):
-    __tablename__ = 'Muggle Action'
+class MugglyThing(SqlAlchemyBase):
+    __tablename__ = 'MugglyThing'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    submitter_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('User.id'), nullable=False)
+    txt = sqlalchemy.Column(sqlalchemy.String, index=True)
+    wiki_page = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True)
 
     # relationships
-    submitter = orm.relationship('Muggle', back_populates='submits')
     muggles = orm.relationship('Muggle', back_populates='actions')

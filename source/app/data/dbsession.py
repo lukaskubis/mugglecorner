@@ -19,6 +19,6 @@ class DBSessionFactory:
             raise Exception('Data file err')
 
         conn_str = 'sqlite:///' + db_file
-        engine = sqlalchemy.create_engine(conn_str)
+        engine = sqlalchemy.create_engine(conn_str, echo=False)
         SqlAlchemyBase.metadata.create_all(engine)
         DBSessionFactory.factory = orm.sessionmaker(bind=engine)

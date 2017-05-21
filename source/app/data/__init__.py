@@ -7,6 +7,3 @@ from .dbsession import *
 def init_db(db_folder):
     rel_folder = os.path.join('db', 'muggledb.sqlite')
     DBSessionFactory.global_init(os.path.join(db_folder, rel_folder))
-
-class Wrapper():
-    pass
