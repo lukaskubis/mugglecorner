@@ -8,11 +8,11 @@ from functools import wraps
 
 
 class DBSessionFactory:
-    factory = None
+    session = None
 
     @staticmethod
     def global_init(db_file):
-        if DBSessionFactory.factory:
+        if DBSessionFactory.session:
             return
 
         if not db_file or not db_file.strip():
@@ -21,13 +21,13 @@ class DBSessionFactory:
         conn_str = 'sqlite:///' + db_file
         engine = sqlalchemy.create_engine(conn_str, echo=True)
         db.declarative_base().metadata.create_all(engine)
-        DBSessionFactory.factory = orm.sessionmaker(bind=engine)
+        DBSessionFactory.session = orm.sessionmaker(bind=engine)
 
 
 def db_session(query_func):
     @wraps(query_func)
     def session_wrapper(*args, **kwargs):
-        session = DBSessionFactory.factory()
+        session = DBSessionFactory.session()
         query_result = query_func(session, *args, **kwargs)
         if not query_result:
             session.commit()
