@@ -2,13 +2,16 @@
 
 from .dbsession import *
 
+SqlAlchemyBase = db.declarative_base()
+
 class Muggle(SqlAlchemyBase):
     __tablename__ = 'Muggle'
 
     id = sqlalchemy.Column(sqlalchemy.String, primary_key=True)
+    active = sqlalchemy.Column(sqlalchemy.Boolean)
 
     # relationships
-    muggly_things = orm.relationship('MugglyThing', back_populates='muggles')
+    # muggly_things = orm.relationship('MugglyThing', back_populates='muggles')
 
 
 class MugglyThing(SqlAlchemyBase):
@@ -16,7 +19,7 @@ class MugglyThing(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     txt = sqlalchemy.Column(sqlalchemy.String, index=True)
-    wiki_page = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True)
+    page = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True)
 
     # relationships
-    muggles = orm.relationship('Muggle', back_populates='actions')
+    # muggles = orm.relationship('Muggle', back_populates='actions')
