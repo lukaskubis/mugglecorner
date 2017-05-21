@@ -1,24 +1,33 @@
 # tables.py
 
+from sqlalchemy import Table, Column, ForeignKey, String, Integer, Boolean
 from .dbsession import *
 
 
-class Muggle(SqlAlchemyBase):
+# association table
+mugglary = Table('Mugglary', Base.metadata,
+    Column('mug_id', String, ForeignKey('Muggle.id')),
+    Column('mugthing_id', String, ForeignKey('MugglyThing.id'))
+    )
+
+
+class Muggle(Base):
     __tablename__ = 'Muggle'
 
-    id = sqlalchemy.Column(sqlalchemy.String, primary_key=True)
-    active = sqlalchemy.Column(sqlalchemy.Boolean)
+    id = Column(String, primary_key=True)
+    active = Column(Boolean)
 
-    # relationships
-    # muggly_things = orm.relationship('MugglyThing', back_populates='muggles')
+    # mugglary
+    muggly_things = orm.relationship('MugglyThing', secondary=lambda: mugglary, back_populates='muggles')
 
 
-class MugglyThing(SqlAlchemyBase):
+class MugglyThing(Base):
     __tablename__ = 'MugglyThing'
 
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    txt = sqlalchemy.Column(sqlalchemy.String, index=True)
-    page = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True)
+    id = Column(String, primary_key=True)
+    txt = Column(String, index=True)
+    page = Column(String, index=True, unique=True)
+    status = Column(Boolean)
 
-    # relationships
-    # muggles = orm.relationship('Muggle', back_populates='actions')
+    # mugglary
+    muggles = orm.relationship('Muggle', secondary=lambda: mugglary, back_populates='muggly_things')
