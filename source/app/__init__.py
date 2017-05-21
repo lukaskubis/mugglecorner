@@ -12,6 +12,9 @@ def main(global_config, **settings):
     config.include('pyramid_jinja2')
     config.include('social_pyramid')
 
+    # custom jinja2 extension
+    config.add_jinja2_renderer('.j2')
+
     # initialize the database here
     init_db(os.path.dirname(__file__))
 
