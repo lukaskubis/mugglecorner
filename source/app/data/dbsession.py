@@ -8,6 +8,18 @@ from functools import wraps
 
 Base = db.declarative_base()
 
+
+class Session(orm.sessionmaker):
+    def __enter__(self):
+        self.session = self()
+        return self.session
+
+    def __exit__(self, type, exc, tb):
+        if not self.session.result:
+            self.session.commit()
+        del(self)
+
+
 class DBSessionFactory:
     session = None
 
@@ -22,15 +34,13 @@ class DBSessionFactory:
         conn_str = 'sqlite:///' + db_file
         engine = sqlalchemy.create_engine(conn_str, echo=True)
         Base.metadata.create_all(engine)
-        DBSessionFactory.session = orm.sessionmaker(bind=engine)
+        DBSessionFactory.session = Session(bind=engine)
 
     @staticmethod
     def querysession(query_func):
         @wraps(query_func)
         def session_wrapper(*args, **kwargs):
-            session = DBSessionFactory.session()
-            query_result = query_func(session, *args, **kwargs)
-            if not query_result:
-                session.commit()
-            return query_result
+            with DBSessionFactory.session as session:
+                session.result = query_func(session, *args, **kwargs)
+                return session.result
         return session_wrapper
