@@ -32,6 +32,5 @@ class DBSessionFactory:
             query_result = query_func(session, *args, **kwargs)
             if not query_result:
                 session.commit()
-            else:
-                return query_result
+            return query_result
         return session_wrapper
