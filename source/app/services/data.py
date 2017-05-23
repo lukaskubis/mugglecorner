@@ -13,13 +13,13 @@ class MuggleData:
 
     @staticmethod
     @DBSessionFactory.querysession
-    def get_muggle(session, uid):
-        return session.query(Muggle).filter_by(id=uid).options(EntryData.join).first()
+    def get_muggle(session, muggle_id):
+        return session.query(Muggle).filter_by(id=muggle_id).options(EntryData.join).first()
 
     @staticmethod
     @DBSessionFactory.querysession
-    def add_muggle(session, uid, active=True):
-        return session.add(Muggle(id=uid, active=active))
+    def new_muggle(session, muggle_id, active=True):
+        return session.add(Muggle(id=muggle_id, active=active))
 
 
 class EntryData:
@@ -27,17 +27,17 @@ class EntryData:
 
     @staticmethod
     @DBSessionFactory.querysession
-    def muggly_things(session):
+    def entries(session):
         return session.query(Entry).options(MuggleData.join).all()
 
     @staticmethod
     @DBSessionFactory.querysession
-    def get_muggly_thing(session, mid):
-        return session.query(Entry).filter_by(id=mid).options(MuggleData.join).first()
+    def get_entry(session, entry_id):
+        return session.query(Entry).filter_by(id=entry_id).options(MuggleData.join).first()
 
     @staticmethod
     @DBSessionFactory.querysession
-    def add_muggly_thing(session, mid, txt):
+    def new_entry(session, mid, txt):
         return session.add(Entry(id=mid, txt=txt, status=False))
 
 
