@@ -1,7 +1,8 @@
 # __init__.py
 
 from pyramid.config import Configurator
-from .data import db_init
+from .data import init_db
+from .routes import init_routes
 
 
 def main(global_config, **settings):
@@ -9,15 +10,14 @@ def main(global_config, **settings):
     """
     config = Configurator(settings=settings)
     config.include('pyramid_jinja2')
-    config.include('social_pyramid')
+    config.include('pyramid_handlers')
 
     # custom jinja2 extension
     config.add_jinja2_renderer('.j2')
 
-    # initialize the database
-    db_init()
+    # initialize the database and routes
+    init_db()
+    init_routes(config)
 
-    config.add_static_view('static', 'static', cache_max_age=3600)
-    config.add_route('home', '/')
     config.scan()
     return config.make_wsgi_app()

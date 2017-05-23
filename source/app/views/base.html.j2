@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="{{request.locale_name}}">
+  <head>
+    {% block head %}
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="muggle corner">
+      <meta name="author" content="Lukas Kubis">
+      <title>
+        {% block title %}Muggle Corner{% endblock title %}
+      </title>
+      <link href="{{request.static_url('app:static/style/app.css')}}" rel="stylesheet">
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <![endif]-->
+    {% endblock head %}
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="wrapper">
+        <h3>Muggle corner</h3>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <div class="content">
+        {% block content %}
+          No content
+        {% endblock content%}
+      </div>
+    </div>
+
+    <footer>
+      <div class="wrapper">
+        {% block footer %}
+          <div class="contact">
+            <a href="">Twitter</a>
+            <a href="">Mail</a>
+          </div>
+          <div class="copyright">
+            © 2017 <a href="https://twitter.com/thelukaskubis" target="_blank">Lukas Kubis</a>
+          </div>
+        {% endblock footer%}
+      </div>
+    </footer>
+
+    {% block js %}
+      <script src="//oss.maxcdn.com/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script src="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    {% endblock js%}
+
+  </body>
+</html>
