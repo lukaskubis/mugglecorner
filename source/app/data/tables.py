@@ -7,7 +7,7 @@ from .dbsession import *
 # association table
 mugglary = Table('Mugglary', Base.metadata,
     Column('mug_id', String, ForeignKey('Muggle.id')),
-    Column('mugthing_id', String, ForeignKey('MugglyThing.id'))
+    Column('mugthing_id', String, ForeignKey('CornerEntry.id'))
     )
 
 
@@ -18,15 +18,15 @@ class Muggle(Base):
     active = Column(Boolean, index=True, nullable=False)
 
     # mugglary
-    muggly_things = orm.relationship('MugglyThing', secondary=lambda: mugglary, back_populates='muggles')
+    entries = orm.relationship('CornerEntry', secondary=lambda: mugglary, back_populates='muggles')
 
 
-class MugglyThing(Base):
-    __tablename__ = 'MugglyThing'
+class CornerEntry(Base):
+    __tablename__ = 'CornerEntry'
 
     id = Column(String, primary_key=True)
     txt = Column(String, index=True, nullable=False)
     status = Column(Boolean, index=True, nullable=False)
 
     # mugglary
-    muggles = orm.relationship('Muggle', secondary=lambda: mugglary, back_populates='muggly_things')
+    muggles = orm.relationship('Muggle', secondary=lambda: mugglary, back_populates='entries')

@@ -9,12 +9,12 @@ class MuggleData:
     @staticmethod
     @DBSessionFactory.querysession
     def muggles(session):
-        return session.query(Muggle).options(MugglyThingData.join).all()
+        return session.query(Muggle).options(EntryData.join).all()
 
     @staticmethod
     @DBSessionFactory.querysession
     def get_muggle(session, uid):
-        return session.query(Muggle).filter_by(id=uid).options(MugglyThingData.join).first()
+        return session.query(Muggle).filter_by(id=uid).options(EntryData.join).first()
 
     @staticmethod
     @DBSessionFactory.querysession
@@ -22,24 +22,24 @@ class MuggleData:
         return session.add(Muggle(id=uid, active=active))
 
 
-class MugglyThingData:
-    join = orm.joinedload('muggly_things')
+class EntryData:
+    join = orm.joinedload('entries')
 
     @staticmethod
     @DBSessionFactory.querysession
     def muggly_things(session):
-        return session.query(MugglyThing).options(MuggleData.join).all()
+        return session.query(Entry).options(MuggleData.join).all()
 
     @staticmethod
     @DBSessionFactory.querysession
     def get_muggly_thing(session, mid):
-        return session.query(MugglyThing).filter_by(id=mid).options(MuggleData.join).first()
+        return session.query(Entry).filter_by(id=mid).options(MuggleData.join).first()
 
     @staticmethod
     @DBSessionFactory.querysession
     def add_muggly_thing(session, mid, txt):
-        return session.add(MugglyThing(id=mid, txt=txt, status=False))
+        return session.add(Entry(id=mid, txt=txt, status=False))
 
 
-class DataService(MuggleData, MugglyThingData):
+class DataService(MuggleData, EntryData):
     pass
