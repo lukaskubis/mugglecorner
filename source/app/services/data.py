@@ -37,9 +37,12 @@ class EntryData:
 
     @staticmethod
     @DBSessionFactory.querysession
-    def new_entry(session, mid, txt):
-        return session.add(Entry(id=mid, txt=txt, status=False))
+    def new_entry(session, entry_id, txt):
+        return session.add(Entry(id=entry_id, txt=txt, status=False))
 
 
 class DataService(MuggleData, EntryData):
     pass
+
+
+__all__ = ['DataService']
