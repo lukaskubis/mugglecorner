@@ -1,4 +1,4 @@
-# controllers.py
+# controller.py
 
 import hashlib
 from os import path
@@ -27,15 +27,3 @@ class Controller:
             md5.update(data)
 
         return static + '?cacheId=' + md5.hexdigest()
-
-
-class HomeController(Controller):
-    @action(renderer='views/index.html.j2')
-    def index(self):
-        return {}
-
-
-class PodcastController(Controller):
-    @action(renderer='views/podcast.html.j2')
-    def index(self):
-        return {}

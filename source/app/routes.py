@@ -8,5 +8,5 @@ def init_routes(config):
     config.add_static_view('static', 'static', cache_max_age=3600)
 
     # defaults
-    config.add_handler('root', '/', handler=HomeController, action='index')
+    config.add_handler('root', '/', handler=RootController, action='index')
     config.add_handler('podcast', '/podcast', handler=PodcastController, action='index')

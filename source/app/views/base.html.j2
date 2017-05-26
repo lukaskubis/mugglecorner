@@ -10,7 +10,7 @@
       <title>
         {% block title %}Muggle Corner{% endblock title %}
       </title>
-      <link href="{{ view.cache('static/style/app.css') }}" rel="stylesheet">
+      <link href="{{ view.cache('../static/style/app.css') }}" rel="stylesheet">
       <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
       <!--[if lt IE 9]>
         <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -20,11 +20,6 @@
   </head>
 
   <body>
-    <div class="header">
-      <div class="wrapper">
-        <h3>Muggle corner</h3>
-      </div>
-    </div>
 
     <div class="wrapper">
       <div class="content">
@@ -33,20 +28,6 @@
         {% endblock content%}
       </div>
     </div>
-
-    <footer>
-      <div class="wrapper">
-        {% block footer %}
-          <div class="contact">
-            <a href="">Twitter</a>
-            <a href="">Mail</a>
-          </div>
-          <div class="copyright">
-            © 2017 <a href="https://twitter.com/thelukaskubis" target="_blank">Lukas Kubis</a>
-          </div>
-        {% endblock footer%}
-      </div>
-    </footer>
 
     {% block js %}
       <script src="//oss.maxcdn.com/libs/jquery/1.10.2/jquery.min.js"></script>
