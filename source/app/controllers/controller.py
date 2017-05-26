@@ -23,6 +23,13 @@ class Controller:
     def RESTful(cls):
         return Controller.renderer('json')(cls)
 
+    @staticmethod
+    def index(action):
+        @wraps(action)
+        def wrapper(self):
+            return self.index()
+        return wrapper
+
     def cache(self, static):
         if not static:
             return 'ERROR_NO_FILE:\n ({})'.format(static)
