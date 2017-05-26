@@ -30,6 +30,26 @@ class Controller:
             return self.index()
         return wrapper
 
+    @staticmethod
+    def url_id_check(func):
+        def redirect_to_view(action):
+            @wraps(action)
+            def redirect(self):
+                _action = action
+                params = self.request.matchdict
+                if 'id' in params:
+                    try:
+                        _ = func(params['id'])
+                    except Exception:
+                        cls_dict = self.__class__.__dict__
+                        methods = [k for k, v in cls_dict.items() if callable(v)]
+                        if params['id'] in methods:
+                            self.request.matchdict = {}
+                            _action = cls_dict[params['id']]
+                return _action(self)
+            return redirect
+        return redirect_to_view
+
     def cache(self, static):
         if not static:
             return 'ERROR_NO_FILE:\n ({})'.format(static)
