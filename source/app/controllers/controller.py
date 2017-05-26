@@ -3,11 +3,19 @@
 import hashlib
 from os import path
 from pyramid_handlers import action
+from functools import wraps
 
 
 class Controller:
     def __init__(self, request):
         self.request = request
+
+    @staticmethod
+    def RESTful(cls):
+        for key, val in cls.__dict__.items():
+            if callable(val):
+                setattr(cls, key, action(renderer='json')(val))
+        return cls
 
     def cache(self, static):
         if not static:

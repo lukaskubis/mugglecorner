@@ -2,6 +2,6 @@
 
 from .controller import *
 
-# @Controller.RESTful
+@Controller.RESTful
 class APIController(Controller):
     pass
