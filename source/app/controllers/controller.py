@@ -11,11 +11,17 @@ class Controller:
         self.request = request
 
     @staticmethod
+    def renderer(renderer):
+        def set_renderer(cls):
+            for key, val in cls.__dict__.items():
+                if callable(val):
+                    setattr(cls, key, action(renderer=renderer)(val))
+            return cls
+        return set_renderer
+
+    @staticmethod
     def RESTful(cls):
-        for key, val in cls.__dict__.items():
-            if callable(val):
-                setattr(cls, key, action(renderer='json')(val))
-        return cls
+        return Controller.renderer('json')(cls)
 
     def cache(self, static):
         if not static:
