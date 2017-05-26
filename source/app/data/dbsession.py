@@ -12,6 +12,7 @@ Base = db.declarative_base()
 class Session(orm.sessionmaker):
     def __enter__(self):
         self.session = self()
+        self.session.result = None
         return self.session
 
     def __exit__(self, type, exc, tb):
