@@ -2,44 +2,36 @@
 
 from .controllers import *
 
-def add_controller_routes(url, ctrl, name, action, *, enable_id=True, root_action=False, name_action=False):
+def set_urls(config, route_id, url, enable_id=True, **kwargs):
+    config.add_handler(f'{route_id}', url, **kwargs)
+    config.add_handler(f'{route_id}/', url + '/', **kwargs)
+    if enable_id:
+        config.add_handler(f'{route_id}_id', url + '/{id}', **kwargs)
+        config.add_handler(f'{route_id}_id_', url + '/{id}/', **kwargs)
+
+
+def add_controller_routes(config, ctrl, action, *, enable_id=True, root_action=False, name_action=True):
     kwargs = dict(handler=ctrl, action=action)
+    urlname = ctrl.__urlname__
+    route = f'_{urlname}_{action}'
 
-    # 'index' gets always assigned as root to the name
     if action=='index':
-        url(name + '_ctrl_index', '/' + name, **kwargs)
-        url(name + '_ctrl_index/', '/' + name + '/', **kwargs)
-        if enable_id:
-            url(name + '_ctrl_index_id', '/' + name + '/{id}', **kwargs)
-            url(name + '_ctrl_index_id/', '/' + name + '/{id}/', **kwargs)
-        return
-
-    # name not required in url
+        return set_urls(config, f'i{route}', f'/{urlname}', enable_id, **kwargs)
     if root_action:
-        url(name + '_ctrl_root' + action, '/' + action, **kwargs)
-        url(name + '_ctrl_root/' + action, '/' + action + '/', **kwargs)
-        if enable_id:
-            url(name + '_ctrl_root_id' + action, '/' + action + '/{id}', **kwargs)
-            url(name + '_ctrl_root_id/' + action, '/' + action + '/{id}/', **kwargs)
-
-    # full url version
+        set_urls(config, f'r{route}', f'/{action}', enable_id, **kwargs)
     if name_action:
-        url(name + '_ctrl_' + action, name + '/' + action, **kwargs)
-        url(name + '_ctrl/' + action + '/', name + '/' + action + '/', **kwargs)
-        if enable_id:
-            url(name + '_ctrl_id' + action, name + '/' + action + '/{id}', **kwargs)
-            url(name + '_ctrl_id/' + action, name + '/' + action + '/{id}/', **kwargs)
+        set_urls(config, f'f{route}', f'{urlname}/{action}', enable_id, **kwargs)
 
 
 def init_routes(config):
-    url = config.add_handler
+    set_url = config.add_handler
     # static content
     config.add_static_view('static', 'static', cache_max_age=3600)
 
     # defaults
-    url('root', '/', handler=RootController, action='index')
+    set_url('root', '/', handler=RootController, action='index')
 
     # podcast views
-    add_controller_routes(url, PodcastController, 'podcast', 'index')
-    add_controller_routes(url, PodcastController, 'podcast', 'episode', name_action=True)
-    add_controller_routes(url, PodcastController, 'podcast', 'episodes', name_action=True)
+    add_controller_routes(config, PodcastController, 'index')
+    add_controller_routes(config, PodcastController, 'episode')
+    add_controller_routes(config, PodcastController, 'episodes')
