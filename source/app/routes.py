@@ -2,36 +2,29 @@
 
 from .controllers import *
 
-def set_urls(config, route_id, url, enable_id=True, **kwargs):
-    config.add_handler(f'{route_id}', url, **kwargs)
-    config.add_handler(f'{route_id}/', url + '/', **kwargs)
-    if enable_id:
-        config.add_handler(f'{route_id}_id', url + '/{id}', **kwargs)
-        config.add_handler(f'{route_id}_id_', url + '/{id}/', **kwargs)
-
-
-def add_controller_routes(config, ctrl, action, *, enable_id=True, root_action=False, name_action=True):
-    kwargs = dict(handler=ctrl, action=action)
-    urlname = ctrl.__urlname__
-    route = f'_{urlname}_{action}'
-
-    if action=='index':
-        return set_urls(config, f'i{route}', f'/{urlname}', enable_id, **kwargs)
-    if root_action:
-        set_urls(config, f'r{route}', f'/{action}', enable_id, **kwargs)
-    if name_action:
-        set_urls(config, f'f{route}', f'{urlname}/{action}', enable_id, **kwargs)
-
 
 def init_routes(config):
-    set_url = config.add_handler
     # static content
     config.add_static_view('static', 'static', cache_max_age=3600)
 
-    # defaults
-    set_url('root', '/', handler=RootController, action='index')
+    # podcast routes
+    podcast = PodcastController, 'index'
+    config.add_handler('f_podcast_episodes_id_', 'podcast/episodes/{id}/', *podcast)
+    config.add_handler('f_podcast_episodes_id', 'podcast/episodes/{id}', *podcast)
+    config.add_handler('f_podcast_episode_id_', 'podcast/episode/{id}/', *podcast)
+    config.add_handler('f_podcast_episode_id', 'podcast/episode/{id}', *podcast)
+    config.add_handler('f_podcast_episodes_', 'podcast/episodes/', *podcast)
+    config.add_handler('f_podcast_episodes', 'podcast/episodes', *podcast)
+    config.add_handler('f_podcast_id_', 'podcast/{id}/', *podcast)
+    config.add_handler('f_podcast_id', 'podcast/{id}', *podcast)
+    config.add_handler('f_podcast_', 'podcast/', *podcast)
+    config.add_handler('f_podcast', 'podcast', *podcast)
 
-    # podcast views
-    add_controller_routes(config, PodcastController, 'index')
-    add_controller_routes(config, PodcastController, 'episode')
-    add_controller_routes(config, PodcastController, 'episodes')
+
+    # defaults/entry routes
+    defaults = RootController, 'entry'
+    config.add_handler('r_entry_id_', '/entry/{id}/', *defaults)
+    config.add_handler('r_entry_id', '/entry/{id}', *defaults)
+    config.add_handler('r_id_', '/{id}/', *defaults)
+    config.add_handler('r_id', '/{id}', *defaults)
+    config.add_handler('r', '/', RootController, 'index')
