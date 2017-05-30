@@ -6,3 +6,7 @@ from .controller import *
 class PodcastController(Controller):
     def podcast(self):
         return {}
+
+    # @Controller.resource()
+    def episode(self):
+        pass

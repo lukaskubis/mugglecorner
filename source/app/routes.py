@@ -12,7 +12,7 @@ def init_routes(config):
     config.add_handler('f_podcast_id_', 'podcast/{episode}/', *podcast_episode)
     config.add_handler('f_podcast_id', 'podcast/{episode}', *podcast_episode)
 
-    podcast = PodcastController, 'index'
+    podcast = PodcastController, 'podcast'
     config.add_handler('f_podcast_', 'podcast/', *podcast)
     config.add_handler('f_podcast', 'podcast', *podcast)
 
