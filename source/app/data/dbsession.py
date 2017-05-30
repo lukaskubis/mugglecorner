@@ -5,20 +5,9 @@ import sqlalchemy.orm as orm
 import sqlalchemy.ext.declarative as db
 
 from functools import wraps
+from contextlib import contextmanager
 
 Base = db.declarative_base()
-
-
-class Session(orm.sessionmaker):
-    def __enter__(self):
-        self.session = self()
-        self.session.result = None
-        return self.session
-
-    def __exit__(self, type, exc, tb):
-        if not self.session.result:
-            self.session.commit()
-        del(self)
 
 
 class DBSessionFactory:
@@ -35,13 +24,24 @@ class DBSessionFactory:
         conn_str = 'sqlite:///' + db_file
         engine = sqlalchemy.create_engine(conn_str, echo=True)
         Base.metadata.create_all(engine)
-        DBSessionFactory.session = Session(bind=engine)
+        DBSessionFactory.session = orm.sessionmaker(bind=engine)
 
     @staticmethod
-    def querysession(query_func):
-        @wraps(query_func)
+    @contextmanager
+    def make_session():
+        session = DBSessionFactory.session()
+        session.result = None
+        try:
+            yield session
+        finally:
+            if session.result is None:
+                session.commit()
+
+    @staticmethod
+    def querysession(func):
+        @wraps(func)
         def session_wrapper(*args, **kwargs):
-            with DBSessionFactory.session as session:
-                session.result = query_func(session, *args, **kwargs)
+            with DBSessionFactory.make_session() as session:
+                session.result = func(session, *args, **kwargs)
                 return session.result
         return session_wrapper
