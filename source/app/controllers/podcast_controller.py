@@ -2,8 +2,7 @@
 
 from .controller import *
 
-@Controller.renderer('views/podcast.html.j2')
+@Controller.renderer()
 class PodcastController(Controller):
-
-    def index(self):
+    def podcast(self):
         return {}

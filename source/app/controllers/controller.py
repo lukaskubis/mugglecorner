@@ -5,7 +5,7 @@ import hashlib
 from os import path
 from pyramid_handlers import action
 from pyramid.httpexceptions import *
-from functools import wraps
+from functools import wraps, partial
 
 from app.services import *
 
@@ -16,11 +16,11 @@ class Controller:
 
 
     @staticmethod
-    def renderer(renderer):
+    def renderer(renderer='views/{}.html.j2'):
         def set_renderer(cls):
             for key, val in cls.__dict__.items():
-                if callable(val):
-                    setattr(cls, key, action(renderer=renderer)(val))
+                if callable(val) and not key.startswith('__'):
+                    setattr(cls, key, action(renderer=renderer.format(key))(val))
             return cls
         return set_renderer
 
