@@ -9,5 +9,6 @@ class RootController(Controller):
         return {}
 
     @action(renderer='views/entry.html.j2')
+    @Controller.resource(DataService.get_entry)
     def entry(self):
-        return {}
+        pass

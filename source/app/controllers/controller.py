@@ -1,14 +1,19 @@
 # controller.py
 
 import hashlib
+
 from os import path
 from pyramid_handlers import action
+from pyramid.httpexceptions import *
 from functools import wraps
+
+from app.services import *
 
 
 class Controller:
     def __init__(self, request):
         self.request = request
+
 
     @staticmethod
     def renderer(renderer):
@@ -19,30 +24,25 @@ class Controller:
             return cls
         return set_renderer
 
+
     @staticmethod
     def RESTful(cls):
         return Controller.renderer('json')(cls)
 
-    # TODO:
-    # @staticmethod
-    # def id_check(check):
-    #     def redirect_to_view(action):
-    #         @wraps(action)
-    #         def redirect(self):
-    #             _action = action
-    #             params = self.request.matchdict
-    #             if 'id' in params:
-    #                 try:
-    #                     _ = check(params['id'])
-    #                 except Exception:
-    #                     cls_dict = self.__class__.__dict__
-    #                     methods = [k for k, v in cls_dict.items() if callable(v)]
-    #                     if params['id'] in methods:
-    #                         self.request.matchdict = {}
-    #                         _action = cls_dict[params['id']]
-    #             return _action(self)
-    #         return redirect
-    #     return redirect_to_view
+
+    @staticmethod
+    def resource(source_method):
+        def _(action):
+            @wraps(action)
+            def action_wrapper(self):
+                request = self.request.matchdict[action.__name__]
+                requested_item = source_method(request)
+                if requested_item is None:
+                    raise HTTPNotFound(request)
+                return {action.__name__:requested_item}
+            return action_wrapper
+        return _
+
 
     def cache(self, static):
         if not static:

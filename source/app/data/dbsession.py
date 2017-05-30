@@ -38,7 +38,7 @@ class DBSessionFactory:
                 session.commit()
 
     @staticmethod
-    def querysession(func):
+    def session_method(func):
         @wraps(func)
         def session_wrapper(*args, **kwargs):
             with DBSessionFactory.make_session() as session:
@@ -47,8 +47,8 @@ class DBSessionFactory:
         return session_wrapper
 
     @staticmethod
-    def sessionmethods(cls):
+    def session_methods(cls):
         for key, val in cls.__dict__.items():
             if isinstance(val, (staticmethod)):
-                setattr(cls, key, type(val)(DBSessionFactory.querysession(val.__func__)))
+                setattr(cls, key, staticmethod(DBSessionFactory.session_method(val.__func__)))
         return cls
