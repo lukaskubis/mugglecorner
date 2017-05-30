@@ -21,9 +21,10 @@ def init_routes(config):
     config.add_handler('r_entry_id_', '/entry/{entry}/', *entry)
     config.add_handler('r_entry_id', '/entry/{entry}', *entry)
 
+    # access entries from root path
+    config.add_handler('r_id_', '/{entry}/', *entry)
+    config.add_handler('r_id', '/{entry}', *entry)
+
     # root
     defaults = RootController, 'index'
-    # TODO:
-    # config.add_handler('r_id_', '/{entry}/', *defaults)
-    # config.add_handler('r_id', '/{entry}', *defaults)
     config.add_handler('r', '/', *defaults)
