@@ -45,3 +45,10 @@ class DBSessionFactory:
                 session.result = func(session, *args, **kwargs)
                 return session.result
         return session_wrapper
+
+    @staticmethod
+    def sessionmethods(cls):
+        for key, val in cls.__dict__.items():
+            if isinstance(val, (staticmethod)):
+                setattr(cls, key, type(val)(DBSessionFactory.querysession(val.__func__)))
+        return cls
